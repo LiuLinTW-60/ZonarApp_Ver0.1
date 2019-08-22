@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    useLibrary 'org.apache.http.legacy'
+
+    defaultConfig {
+        applicationId "com.zonar.zonarapp"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('../zonar.keystore')
+            keyPassword 'abc123!!'
+            keyAlias 'key_zonar'
+            storePassword 'abc123!!'
+        }
+        release {
+            storeFile file('../zonar.keystore')
+            keyPassword 'abc123!!'
+            keyAlias 'key_zonar'
+            storePassword 'abc123!!'
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles '../proguard.cfg'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        disable "ResourceType"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    implementation project(':easyclass')
+    implementation project(':ext_lib')
+}

@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+    useLibrary 'org.apache.http.legacy'
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 28
+    }
+    signingConfigs {
+        debug {
+            storeFile file("../debug.keystore")
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+        disable "ResourceType"
+    }
+}
+
+dependencies {
+}

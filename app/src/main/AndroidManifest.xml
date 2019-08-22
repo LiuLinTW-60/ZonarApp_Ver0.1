@@ -1,0 +1,90 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zonar.zonarapp">
+
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true"/>
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!-- So that we can get the account name -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!--  Required if we need to invalidate access tokens -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--  -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <application
+        android:name=".ZaApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.Black.NoTitleBar"
+        android:vmSafeMode="true"
+        android:usesCleartextTraffic="true" >
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+
+        <activity
+            android:name="com.zonar.zonarapp.ZaMajorActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.zonar.zonarapp.ZaAboutActivity" android:screenOrientation="portrait" />
+        <activity android:name="com.zonar.zonarapp.ZaUpdateActivity" android:screenOrientation="portrait" />
+        <activity android:name="com.zonar.zonarapp.ZaContactActivity" android:screenOrientation="portrait" />
+        <activity android:name="com.zonar.zonarapp.ZaIncActivity" android:screenOrientation="portrait" />
+
+        <receiver android:name=".service.MediaPlayerReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.music.metachanged" />
+                <action android:name="com.android.music.queuechanged" />
+                <action android:name="com.android.music.playbackcomplete" />
+                <action android:name="com.android.music.playstatechanged" />
+                <action android:name="com.htc.music.metachanged" />
+                <action android:name="fm.last.android.metachanged" />
+                <action android:name="com.sec.android.app.music.metachanged" />
+                <action android:name="com.nullsoft.winamp.metachanged" />
+                <action android:name="com.amazon.mp3.metachanged" />
+                <action android:name="com.miui.player.metachanged" />
+                <action android:name="com.real.IMP.metachanged" />
+                <action android:name="com.sonyericsson.music.metachanged" />
+                <action android:name="com.rdio.android.metachanged" />
+                <action android:name="com.samsung.sec.android.MusicPlayer.metachanged" />
+                <action android:name="com.andrew.apollo.metachanged" />
+                <action android:name="com.kugou.android.music.metachanged" />
+                <action android:name="com.ting.mp3.playinfo_changed" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

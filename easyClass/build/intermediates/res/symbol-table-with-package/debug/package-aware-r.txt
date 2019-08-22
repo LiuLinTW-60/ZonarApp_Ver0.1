@@ -1,0 +1,23 @@
+com.james.easyclass
+drawable btn_clock_selector
+drawable btn_next
+drawable btn_previous
+drawable circle_green
+drawable circle_red
+drawable circle_white
+drawable dialog_bg
+drawable dialog_bg_ios
+drawable ic_launcher
+drawable input
+drawable none
+drawable round_corner
+drawable round_corner_button
+drawable round_corner_button_normal
+drawable round_corner_button_press
+drawable round_top_orange_background
+drawable round_top_red_background
+drawable round_white_background
+drawable round_white_border_red_background
+id cursor_edit
+layout edit_text
+style dialog
