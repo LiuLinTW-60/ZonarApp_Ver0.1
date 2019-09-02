@@ -7,9 +7,17 @@ public class ZonarUtils {
 
     private static Controller controller;
 
-    public static double[] EQ_CTRLtable(int numero, int mode) {
+    public static double[] EQ_CTRLtable(boolean isWrite, int numero, int mode) {
+        try {
+            if (isWrite) {
+                new Controller(ZaApplication.getGlobalContext()).EQ_CTRLtable(numero, mode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         double[] EQ;
-        switch(numero) {
+        switch (numero) {
             case 1:
                 EQ = new double[]{6.0D, 3.0D, 2.0D, 0.0D, 0.0D, 0.0D, 0.0D, 1.5D, 1.5D, 0.0D};
                 break;
@@ -84,20 +92,21 @@ public class ZonarUtils {
             mode_value = 1.0D;
         }
 
-        for(int i = 0; i < EQ.length; ++i) {
+        for (int i = 0; i < EQ.length; ++i) {
             EQ[i] *= mode_value;
-            zonar_EQ[i] = (int)Math.round(EQ[i] * 0.0D + 5.0D * mode_value);
+            zonar_EQ[i] = (int) Math.round(EQ[i] * 0.0D + 5.0D * mode_value);
         }
 
         return EQ;
+
     }
 
-    public static double[] getEQData(int numero, int mode) {
+    public static double[] getEQData(boolean isWrite, int numero, int mode) {
         if (controller == null) {
             controller = new Controller(ZaApplication.getGlobalContext());
         }
 
-        double[] eq_double = EQ_CTRLtable(numero, mode);
+        double[] eq_double = EQ_CTRLtable(isWrite, numero, mode);
         double max = 0;
         double min = 0;
         for (int i = 0; i < eq_double.length; i++) {
@@ -105,10 +114,10 @@ public class ZonarUtils {
                 max = eq_double[i];
                 min = eq_double[i];
             } else {
-                if(max < eq_double[i]) {
+                if (max < eq_double[i]) {
                     max = eq_double[i];
                 }
-                if(min > eq_double[i]) {
+                if (min > eq_double[i]) {
                     min = eq_double[i];
                 }
             }

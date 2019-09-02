@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -13,7 +12,6 @@ import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -48,12 +46,18 @@ public class CircleWaveView extends View {
     private float currentNumero = 1f;
     private int currentNumeroInt = 1;
 
+    private OnAngleChangedListener mOnAngleChangedListener;
+
+    public static interface OnAngleChangedListener {
+        public void onAngleChanged(float angle);
+    }
+
     public CircleWaveView(Context context) {
         super(context);
 
         gradientBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rectangle_gradient);
 
-        double[] values = ZonarUtils.getEQData(currentNumeroInt, 1);
+        double[] values = ZonarUtils.getEQData(true, currentNumeroInt, 1);
 
         for (int i = 0; i < values.length; i++) {
             this.drawValues.set(i, (float) values[i]);
@@ -258,17 +262,25 @@ public class CircleWaveView extends View {
     private void modifyValues(float x, float y) {
         float centerX = getWidth() / 2f;
         float centerY = getHeight() / 2f;
+        float radius = getWidth() / 2f;
 
         touchPoint.x = x;
         touchPoint.y = y;
 
-        float max_distance = getWidth() / 2f;
+        float min_distance = radius / 3f;
+        float max_distance = radius;
         float distance = calculateDistance(touchPoint.x, touchPoint.y);
+        if(distance < min_distance) {
+            float ratio = min_distance / distance;
+            touchPoint.x = (touchPoint.x - centerX) * ratio + centerX;
+            touchPoint.y = (touchPoint.y - centerY) * ratio + centerY;
+        }
         if (distance > max_distance) {
             float ratio = max_distance / distance;
             touchPoint.x = (touchPoint.x - centerX) * ratio + centerX;
             touchPoint.y = (touchPoint.y - centerY) * ratio + centerY;
         }
+        float final_distance = calculateDistance(touchPoint.x, touchPoint.y);
 
         postInvalidate();
 
@@ -276,6 +288,11 @@ public class CircleWaveView extends View {
         if (angle <= 0) {
             angle += 360;
         }
+
+        if (mOnAngleChangedListener != null) {
+            mOnAngleChangedListener.onAngleChanged(angle);
+        }
+
         float numero = angle / 18f;
 
         if (currentNumero == numero) {
@@ -288,13 +305,18 @@ public class CircleWaveView extends View {
 
         if (currentNumeroInt != numeroInt) {
             currentNumeroInt = numeroInt;
-//            ZonarUtils.EQ_table(currentNumeroInt);
         }
 
-        int mode = Math.min(2, (int) (calculateDistance(x, y) / (getWidth() / 3)));
+//        int mode = Math.min(2, (int) (calculateDistance(x, y) / (getWidth() / 3)));
+        int mode = 0;
+        if(final_distance >= radius / 3f + (radius * 2f / 3f) * 2f / 3f) {
+            mode = 2;
+        } else if(final_distance >= radius / 3f + (radius * 2f / 3f) * 1f / 3f) {
+            mode = 1;
+        }
 
-        double[] values = ZonarUtils.getEQData(numeroInt, mode);
-        double[] n_values = ZonarUtils.getEQData(n_numeroInt, mode);
+        double[] values = ZonarUtils.getEQData(true, numeroInt, mode);
+        double[] n_values = ZonarUtils.getEQData(false, n_numeroInt, mode);
         for (int i = 0; i < values.length; i++) {
 
             double value = (n_values[i] - values[i]) * (numero - (int) numero) + values[i];
@@ -310,4 +332,9 @@ public class CircleWaveView extends View {
         float centerY = getHeight() / 2f;
         return (float) Math.sqrt((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY));
     }
+
+    public void setOnAngleChangedListener(OnAngleChangedListener onAngleChangedListener) {
+        mOnAngleChangedListener = onAngleChangedListener;
+    }
+
 }
