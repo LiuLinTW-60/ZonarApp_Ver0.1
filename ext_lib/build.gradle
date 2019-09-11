@@ -1,2 +1,2 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file('xround_app_sdk-debug_Ver.0.3.aar'))
+artifacts.add("default", file('xround_app_sdk-debug_Ver1.0.aar'))

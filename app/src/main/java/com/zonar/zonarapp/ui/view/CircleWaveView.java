@@ -270,7 +270,7 @@ public class CircleWaveView extends View {
         float min_distance = radius / 3f;
         float max_distance = radius;
         float distance = calculateDistance(touchPoint.x, touchPoint.y);
-        if(distance < min_distance) {
+        if (distance < min_distance) {
             float ratio = min_distance / distance;
             touchPoint.x = (touchPoint.x - centerX) * ratio + centerX;
             touchPoint.y = (touchPoint.y - centerY) * ratio + centerY;
@@ -309,9 +309,9 @@ public class CircleWaveView extends View {
 
 //        int mode = Math.min(2, (int) (calculateDistance(x, y) / (getWidth() / 3)));
         int mode = 0;
-        if(final_distance >= radius / 3f + (radius * 2f / 3f) * 2f / 3f) {
+        if (final_distance >= radius / 3f + (radius * 2f / 3f) * 2f / 3f) {
             mode = 2;
-        } else if(final_distance >= radius / 3f + (radius * 2f / 3f) * 1f / 3f) {
+        } else if (final_distance >= radius / 3f + (radius * 2f / 3f) * 1f / 3f) {
             mode = 1;
         }
 

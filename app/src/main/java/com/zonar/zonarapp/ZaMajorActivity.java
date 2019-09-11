@@ -11,6 +11,7 @@ import com.zonar.zonarapp.ui.adapter.ModeAdapter;
 import com.zonar.zonarapp.ui.dialog.InputDialog;
 import com.zonar.zonarapp.ui.layout.ZaMajorLayout;
 import com.zonar.zonarapp.ui.view.SpinnerTextView;
+import com.zonar.zonarapp.utils.ZonarUtils;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,8 @@ public class ZaMajorActivity extends ZaBaseActivity implements View.OnClickListe
     private void setLayout() {
         showLogoTitle();
         getToolbar().showMenuButton();
+
+        ZonarUtils.init(this);
 
         zaMajorLayout = new ZaMajorLayout(this);
         setContentView(zaMajorLayout);
