@@ -4,16 +4,16 @@ import android.content.Context;
 
 import com.xround_app_sdk.Controller;
 
-import java.util.Date;
-
 public class ZonarUtils {
 
     private static Context context;
     private static Controller controller;
 
-    private static int sNumero = -1;
-    private static int sMode = -1;
-    private static long lastTime = 0;
+    private static double[] sZonarEQ;
+    private static int sNumero;
+    private static int sMode;
+
+    private static boolean flagWriting = false;
 
     public static void init(Context ctx) {
         context = ctx;
@@ -56,27 +56,28 @@ public class ZonarUtils {
     }
 
     private synchronized static void write_ZonarEQ(final double[] ZonarEQ, final int numero, final int mode) {
-        if (sNumero == numero && sMode == mode) {
-            return;
-        }
+        sZonarEQ = ZonarEQ;
         sNumero = numero;
         sMode = mode;
 
+        if (flagWriting) {
+            return;
+        }
+        flagWriting = true;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Date now = new Date();
                 try {
-                    if (now.getTime() > lastTime + 1000) {
-                        lastTime = now.getTime();
-                        controller.write_ZonarEQ(ZonarEQ, numero, mode);
+                    controller.write_ZonarEQ(ZonarEQ, numero, mode);
+                    if (sNumero != numero || sMode != mode) {
+                        controller.write_ZonarEQ(sZonarEQ, sNumero, sMode);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                flagWriting = false;
             }
         }).start();
-
     }
 
 }
