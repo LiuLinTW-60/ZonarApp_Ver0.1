@@ -46,6 +46,8 @@ public class CircleWaveView extends View {
     private float currentNumero = 1f;
     private int currentNumeroInt = 1;
 
+    private boolean isTouchDown = false;
+
     private OnAngleChangedListener mOnAngleChangedListener;
 
     public static interface OnAngleChangedListener {
@@ -141,7 +143,7 @@ public class CircleWaveView extends View {
             peeks3.add(new PointF(i_x3, i_y3));
         }
 
-        //
+        // 畫三個等高線圖
         addPathByPeek(path1, peeks1);
         addPathByPeek(path2, peeks2);
         addPathByPeek(path3, peeks3);
@@ -206,11 +208,15 @@ public class CircleWaveView extends View {
             pathMeasure.getPosTan(length * ((float) progress + 5) / 360f, pos, tan);
         }
 
+        // 手指頭位置
         paint.reset();
         paint.setColor(0xffa47b5a);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(touchPoint.x, touchPoint.y, radius / 13f, paint);
-//        canvas.drawCircle(pos[0], pos[1], radius / 13f, paint);
+        if (isTouchDown) {
+            canvas.drawCircle(touchX, touchY, radius / 13f, paint);
+        } else {
+            canvas.drawCircle(pos[0], pos[1], radius / 13f, paint);
+        }
     }
 
     private void addPathByPeek(Path path, ArrayList<PointF> peeks) {
@@ -247,10 +253,13 @@ public class CircleWaveView extends View {
                 float y = motionEvent.getY();
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    isTouchDown = true;
                     modifyValues(x, y);
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+                    isTouchDown = true;
                     modifyValues(x, y);
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    isTouchDown = false;
                     modifyValues(x, y);
                 }
 
