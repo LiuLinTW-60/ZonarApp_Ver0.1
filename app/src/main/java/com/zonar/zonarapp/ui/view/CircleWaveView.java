@@ -1,21 +1,19 @@
 package com.zonar.zonarapp.ui.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.PointF;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.RadialGradient;
 import android.graphics.Rect;
+import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.zonar.zonarapp.R;
 import com.zonar.zonarapp.utils.ArrayUtils;
 import com.zonar.zonarapp.utils.ZonarUtils;
 
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 public class CircleWaveView extends View {
     private static final String TAG = CircleWaveView.class.getSimpleName();
 
-    private Bitmap gradientBitmap;
     private Matrix matrix = new Matrix();
 
     private Path touchPath = new Path();
@@ -36,6 +33,7 @@ public class CircleWaveView extends View {
     private Path path2 = new Path();
     private Path path3 = new Path();
     private Paint paint = new Paint();
+    private Paint shadow = new Paint();
 
     private ArrayList<Float> drawValues = ArrayUtils.newArrayList(10);
     private ArrayList<PointF> peeks1 = new ArrayList<>();
@@ -54,14 +52,14 @@ public class CircleWaveView extends View {
         public void onAngleChanged(float angle);
     }
 
-    public CircleWaveView(Context context) {
+    public CircleWaveView(Context context, double[] values) {
         super(context);
 
-        gradientBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rectangle_gradient);
-
-        double[] values = ZonarUtils.getEQData(true, currentNumeroInt, 1);
-
+        //double[] values = ZonarUtils.getEQData(true, currentNumeroInt, 1);
+        //if(values==null)
+            //values = ZonarUtils.getEQData(true, currentNumeroInt, 1);
         for (int i = 0; i < values.length; i++) {
+            values[i] = i;
             this.drawValues.set(i, (float) values[i]);
         }
 
@@ -79,6 +77,7 @@ public class CircleWaveView extends View {
         float centerX = getWidth() / 2f;
         float centerY = getHeight() / 2f;
         float radius = getWidth() / 2f;
+
 
         drawByTouchPoint(canvas, touchPoint.x, touchPoint.y);
 
@@ -115,32 +114,42 @@ public class CircleWaveView extends View {
             //
             float x1 = (float) (Math.cos(degree) * dist) + centerX;
             float y1 = (float) (Math.sin(degree) * dist) + centerY;
-            float n_x1 = (float) (Math.cos(n_degree) * n_dist) + centerX;
-            float n_y1 = (float) (Math.sin(n_degree) * n_dist) + centerY;
+            float n_x1 = (float) (Math.cos(n_degree) * n_dist) * 10 / 10+ centerX;
+            float n_y1 = (float) (Math.sin(n_degree) * n_dist) * 10 / 10+ centerY;
             float i_x1 = ((x1 + n_x1) / 2 - centerX) * 95 / 100 + centerX;
             float i_y1 = ((y1 + n_y1) / 2 - centerY) * 95 / 100 + centerY;
             peeks1.add(new PointF(x1, y1));
             peeks1.add(new PointF(i_x1, i_y1));
 
             //
-            float x2 = (float) (Math.cos(degree) * dist) * 8 / 10 + centerX;
-            float y2 = (float) (Math.sin(degree) * dist) * 8 / 10 + centerY;
-            float n_x2 = (float) (Math.cos(n_degree) * n_dist) * 8 / 10 + centerX;
-            float n_y2 = (float) (Math.sin(n_degree) * n_dist) * 8 / 10 + centerY;
+            float x2 = (float) (Math.cos(degree) * dist) * 0.85f + centerX;
+            float y2 = (float) (Math.sin(degree) * dist) * 0.85f + centerY;
+            float n_x2 = (float) (Math.cos(n_degree) * n_dist) * 0.85f + centerX;
+            float n_y2 = (float) (Math.sin(n_degree) * n_dist) * 0.85f + centerY;
             float i_x2 = ((x2 + n_x2) / 2 - centerX) * 95 / 100 + centerX;
             float i_y2 = ((y2 + n_y2) / 2 - centerY) * 95 / 100 + centerY;
             peeks2.add(new PointF(x2, y2));
             peeks2.add(new PointF(i_x2, i_y2));
 
             //
-            float x3 = (float) (Math.cos(degree) * dist) * 7 / 10 + centerX;
-            float y3 = (float) (Math.sin(degree) * dist) * 7 / 10 + centerY;
-            float n_x3 = (float) (Math.cos(n_degree) * n_dist) * 7 / 10 + centerX;
-            float n_y3 = (float) (Math.sin(n_degree) * n_dist) * 7 / 10 + centerY;
+            float x3 = (float) (Math.cos(degree) * dist) * 0.7f + centerX;
+            float y3 = (float) (Math.sin(degree) * dist) * 0.7f + centerY;
+            float n_x3 = (float) (Math.cos(n_degree) * n_dist) * 0.7f + centerX;
+            float n_y3 = (float) (Math.sin(n_degree) * n_dist) * 0.7f + centerY;
             float i_x3 = ((x3 + n_x3) / 2 - centerX) * 95 / 100 + centerX;
             float i_y3 = ((y3 + n_y3) / 2 - centerY) * 95 / 100 + centerY;
+            /*float i_x3_1 = ((x3 + n_x3) * 1 / 4 - centerX) * 75 / 100 + centerX;
+            float i_y3_1 = ((y3 + n_y3) * 1 / 4 - centerY) * 75 / 100 + centerY;
+            float i_x3_2 = ((x3 + n_x3) * 2 / 4 - centerX) * 55 / 100 + centerX;
+            float i_y3_2 = ((y3 + n_y3) * 2 / 3 - centerY) * 55 / 100 + centerY;
+            float i_x3_3 = ((x3 + n_x3) * 3 / 4 - centerX) * 75 / 100 + centerX;
+            float i_y3_3 = ((y3 + n_y3) * 3 / 4 - centerY) * 75 / 100 + centerY;*/
             peeks3.add(new PointF(x3, y3));
             peeks3.add(new PointF(i_x3, i_y3));
+            //peeks3.add(new PointF(i_x3_1, i_y3_1));
+            //peeks3.add(new PointF(i_x3_2, i_y3_2));
+            //peeks3.add(new PointF(i_x3_3, i_y3_3));
+
         }
 
         // 畫三個等高線圖
@@ -148,30 +157,64 @@ public class CircleWaveView extends View {
         addPathByPeek(path2, peeks2);
         addPathByPeek(path3, peeks3);
 
+        Rect rect = new Rect(0, 0, getWidth(), getHeight());
+        float angle = (float)(Math.atan2(touchY - centerY, touchX - centerX) * 180 / Math.PI);
+
+        Matrix gradientMatrix = new Matrix();
+        gradientMatrix.preRotate(angle, centerX, centerY);
+
+        //canvas.rotate(angle + 90, centerX, centerY);
+        int[] mColors = new int[]{
+                0xff946b4a,
+                0x8f946b4a,
+                0x4f946b4a,
+                0x0f946b4a
+        };
+        Shader SweepShader1 = new SweepGradient(centerX, centerY, mColors, null);
+        SweepShader1.setLocalMatrix(gradientMatrix);
         paint.reset();
-        paint.setColor(0xff946b4a);
+        //paint.setColor(0xff946b4a);
         paint.setStyle(Paint.Style.FILL);
+        paint.setShader(SweepShader1);
         canvas.drawPath(path1, paint);
 
+        mColors = new int[]{
+                0xffb8845c,
+                0x8fb8845c,
+                0x4fb8845c,
+                0x0fb8845c
+        };
+        Shader SweepShader2 = new SweepGradient(centerX, centerY, mColors, null);
+        SweepShader2.setLocalMatrix(gradientMatrix);
         paint.reset();
-        paint.setColor(0xffb8845c);
+        //paint.setColor(0xffb8845c);
         paint.setStyle(Paint.Style.FILL);
+        paint.setShader(SweepShader2);
         canvas.drawPath(path2, paint);
 
+        mColors = new int[]{
+                0xffc28b61,
+                0x8fc28b61,
+                0x4fc28b61,
+                0x0fc28b61
+        };
+        Shader SweepShader3 = new SweepGradient(centerX, centerY, mColors, null);
+        SweepShader3.setLocalMatrix(gradientMatrix);
         paint.reset();
-        paint.setColor(0xffc28b61);
+        //paint.setColor(0xffc28b61);
         paint.setStyle(Paint.Style.FILL);
+        paint.setShader(SweepShader3);
         canvas.drawPath(path3, paint);
 
         // 背景漸層圖
-        Rect rect = new Rect(0, 0, getWidth(), getHeight());
-        double angle = Math.atan2(touchY - centerY, touchX - centerX) * 180 / Math.PI;
-        matrix.reset();
-        matrix.postScale(rect.width() / (float) gradientBitmap.getWidth(), rect.height() / (float) gradientBitmap.getHeight());
-        matrix.postRotate((float) angle + 90, centerX, centerY);
-        paint.reset();
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
-        canvas.drawBitmap(gradientBitmap, matrix, paint);
+        //Rect rect = new Rect(0, 0, getWidth(), getHeight());
+        //double angle = Math.atan2(touchY - centerY, touchX - centerX) * 180 / Math.PI;
+        //matrix.reset();
+        //matrix.postScale(rect.width() / (float) gradientBitmap.getWidth(), rect.height() / (float) gradientBitmap.getHeight());
+        //matrix.postRotate((float) angle + 90, centerX, centerY);
+        //paint.reset();
+        //paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        //canvas.drawBitmap(gradientBitmap, matrix, paint);
 
         // 圈圈位置
         if (angle < 0) {
@@ -210,12 +253,22 @@ public class CircleWaveView extends View {
 
         // 手指頭位置
         paint.reset();
-        paint.setColor(0xffa47b5a);
+        paint.setColor(0xffc48c5c);
+        //paint.setColor(0xffa47b5a);
         paint.setStyle(Paint.Style.FILL);
+        shadow.reset();
+        shadow.setStyle(Paint.Style.FILL);
+
         if (isTouchDown) {
-            canvas.drawCircle(touchX, touchY, radius / 13f, paint);
+            Shader dotShade = new RadialGradient(touchX, touchY, radius/ 7f, 0xffc48c5c, 0x00d8ac80, Shader.TileMode.CLAMP);
+            shadow.setShader(dotShade);
+            canvas.drawCircle(touchX, touchY, radius / 20f, paint);
+            canvas.drawCircle(touchX, touchY, radius / 14f, shadow);
         } else {
-            canvas.drawCircle(pos[0], pos[1], radius / 13f, paint);
+            Shader dotShade = new RadialGradient(pos[0], pos[1], radius / 7f, 0xffc48c5c, 0x00d8ac80, Shader.TileMode.CLAMP);
+            shadow.setShader(dotShade);
+            canvas.drawCircle(pos[0], pos[1], radius / 20f, paint);
+            canvas.drawCircle(pos[0], pos[1], radius / 14f, shadow);
         }
     }
 
@@ -231,6 +284,7 @@ public class CircleWaveView extends View {
             float middleY = (peeks.get(i).y + peeks.get(ni).y) / 2;
 
             path.quadTo(peeks.get(i).x, peeks.get(i).y, middleX, middleY);
+            //path.quadTo(middleX, middleY, peeks.get(i).x, peeks.get(i).y);
         }
         path.close();
     }
@@ -277,7 +331,7 @@ public class CircleWaveView extends View {
         touchPoint.y = y;
 
         float min_distance = radius / 3f;
-        float max_distance = radius;
+        float max_distance = radius * 0.9f;
         float distance = calculateDistance(touchPoint.x, touchPoint.y);
         if (distance < min_distance) {
             float ratio = min_distance / distance;

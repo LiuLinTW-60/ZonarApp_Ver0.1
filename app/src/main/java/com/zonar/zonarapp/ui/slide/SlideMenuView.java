@@ -9,6 +9,8 @@ import android.widget.ImageView;
 
 import com.james.views.FreeLayout;
 import com.james.views.FreeTextView;
+import com.zonar.zonarapp.LoginRegisterActivity;
+import com.zonar.zonarapp.MeasureActivity;
 import com.zonar.zonarapp.R;
 import com.zonar.zonarapp.ZaAboutActivity;
 import com.zonar.zonarapp.ZaBaseActivity;
@@ -32,6 +34,7 @@ public class SlideMenuView extends FreeLayout {
     public MenuTextView vrRecordingText;
     public MenuTextView incText;
     public FreeTextView logoutText;
+    public ImageView icon;
 
     //
     public FreeLayout closeLayout;
@@ -74,7 +77,7 @@ public class SlideMenuView extends FreeLayout {
     public void setup() {
         final Context context = getContext();
 
-        ImageView icon = (ImageView) scrollLayout.addFreeView(new ImageView(context),
+        icon = (ImageView) scrollLayout.addFreeView(new ImageView(context),
                 180, 180);
         icon.setImageResource(R.drawable.logo_xr);
         setMargin(icon, 90, 84, 0, 0);
@@ -171,6 +174,16 @@ public class SlideMenuView extends FreeLayout {
     }
 
     private void setListener() {
+
+        icon.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, LoginRegisterActivity.class);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
+            }
+        });
+
         aboutText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,6 +206,15 @@ public class SlideMenuView extends FreeLayout {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ZaContactActivity.class);
+                activity.startActivity(intent);
+                activity.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
+            }
+        });
+
+        vrRecordingText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, MeasureActivity.class);
                 activity.startActivity(intent);
                 activity.overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
             }

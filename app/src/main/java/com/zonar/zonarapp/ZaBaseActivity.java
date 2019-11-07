@@ -20,7 +20,6 @@ public class ZaBaseActivity extends EasyBaseFragmentActivity {
     private Toolbar toolbar;
     private FreeLayout contentLayout;
     private SlideMenuView slideMenuView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +90,7 @@ public class ZaBaseActivity extends EasyBaseFragmentActivity {
     @Override
     public void onBackPressed() {
         if (slideMenuView.isShown()) {
-            slideMenuView.hide();
+            //slideMenuView.hide();
             toolbar.backButton.setVisibility(View.GONE);
             toolbar.menuButton.setVisibility(View.VISIBLE);
             toolbar.menuLayout.setVisibility(View.VISIBLE);

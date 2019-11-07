@@ -2,4 +2,16 @@
     <string name="app_name">Zonar</string>
     <string name="introduction">The core DSP technology invented by Embrace Audio Lab, redefines the sound experience. With XROUND, any stereo sound source can be automatically transformed into a multi-channel home theater device.
 This process which traditionally requires complicated setups of up to 6 speakers or more. The XROUND algorithm analyzes and reconstructs sound waves in real time, providing the best performance in millisecond with just two speakers.</string>
+    // Dialog
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="dl_player_initial_err_msg">Initial recorder failed</string>
+    <string name="dl_recorder_storage_err_msg">This device has no external storage.</string>
+    <string name="dl_recorder_storage_full_err_msg">Storage is not enough, can not record the voice.</string>
+    <string name="dl_recorder_initial_err_msg">Initial recorder failed</string>
+    <string name="txt_start">Test Start</string>
+    <string name="txt_stop">Stop</string>
+    <string name="xround_name">XROUND</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

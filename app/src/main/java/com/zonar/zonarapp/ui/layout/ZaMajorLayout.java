@@ -3,34 +3,31 @@ package com.zonar.zonarapp.ui.layout;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.james.utils.LogUtils;
 import com.james.views.FreeLayout;
-import com.james.views.FreeTextView;
 import com.zonar.zonarapp.R;
 import com.zonar.zonarapp.ui.view.CircleWaveView;
+import com.zonar.zonarapp.ui.view.RingTextView;
+import com.zonar.zonarapp.ui.view.RingView;
 import com.zonar.zonarapp.ui.view.TabTextView;
 
-public class ZaMajorLayout extends FreeLayout {
+public class ZaMajorLayout extends FreeLayout{
 
     public TabTextView intelligenceTab;
     public TabTextView hifiTab;
     public CircleWaveView circleWaveView;
-    public ImageView rimImage;
-    public FreeTextView bassText;
-    public FreeTextView richText;
-    public FreeTextView vocalText;
-    public FreeTextView detailedText;
-    public FreeTextView spaciousText;
+    //public ImageView rimImage;
+    public RingView rimImage;
+    public RingTextView rimText;
     public ListView modeList;
 
-    public ZaMajorLayout(Context context) {
+    public ZaMajorLayout(Context context, double[] EQ_arr) {
         super(context);
         this.setBackgroundColor(0xff050505);
-
         //
+        //DrawerLayout drawerView = findViewById(R.layout.activity_drawer);
+
         FreeLayout bottomLayout = (FreeLayout) this.addFreeView(new FreeLayout(context),
                 LayoutParams.MATCH_PARENT, 116,
                 new int[]{ALIGN_PARENT_BOTTOM});
@@ -60,74 +57,22 @@ public class ZaMajorLayout extends FreeLayout {
                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
                 bottomLayout,
                 new int[]{ABOVE});
-
 //        FreeLayout scrollLayout = baseLayout.addFreeScrollView(new FreeLayout(context),
 //                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        //FreeLayout draw = (FreeLayout) baseLayout.addFreeView(inflate(context,R.layout.activity_drawer,null)
+          //      , DrawerLayout.LayoutParams.MATCH_PARENT, DrawerLayout.LayoutParams.MATCH_PARENT);
 
         FreeLayout adjustLayout = (FreeLayout) baseLayout.addFreeView(new FreeLayout(context),
                 664, 664,
                 new int[]{CENTER_HORIZONTAL});
         setMargin(adjustLayout, 0, 34, 0, 0);
 
-        circleWaveView = (CircleWaveView) adjustLayout.addFreeView(new CircleWaveView(context),
-                560, 560,
+        circleWaveView = (CircleWaveView) adjustLayout.addFreeView(new CircleWaveView(context, EQ_arr),
+                580, 580,
                 new int[]{CENTER_IN_PARENT});
 
-        rimImage = (ImageView) adjustLayout.addFreeView(new ImageView(context),
-                664, 664,
-                new int[]{CENTER_HORIZONTAL});
-        rimImage.setImageResource(R.drawable.rim_gradient);
-        rimImage.setRotation(0);
-
-//        ImageView rimTextImage = (ImageView) adjustLayout.addFreeView(new ImageView(context),
-//                664, 664,
-//                new int[]{CENTER_HORIZONTAL});
-//        rimTextImage.setImageResource(R.drawable.rim_text);
-
-        FreeLayout textLayout = (FreeLayout) baseLayout.addFreeView(new FreeLayout(context),
-                750, 664,
-                new int[]{CENTER_HORIZONTAL});
-        setMargin(textLayout, 0, 34, 0, 0);
-
-        bassText = (FreeTextView) textLayout.addFreeView(new FreeTextView(context),
-                153, 60,
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        bassText.setTextColor(0xff7d7d7d);
-        bassText.setTextSizeFitResolution(50);
-        bassText.setText("Bass");
-        bassText.setRotation(-36);
-
-        richText = (FreeTextView) textLayout.addFreeView(new FreeTextView(context),
-                520, 60,
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        richText.setTextColor(0xff7d7d7d);
-        richText.setTextSizeFitResolution(50);
-        richText.setText("Rich");
-        richText.setRotation(36);
-
-        vocalText = (FreeTextView) textLayout.addFreeView(new FreeTextView(context),
-                623, 390,
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        vocalText.setTextColor(0xff000000);
-        vocalText.setTextSizeFitResolution(50);
-        vocalText.setText("Vocal");
-        vocalText.setRotation(108);
-
-        detailedText = (FreeTextView) textLayout.addFreeView(new FreeTextView(context),
-                308, 610,
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        detailedText.setTextColor(0xff7d7d7d);
-        detailedText.setTextSizeFitResolution(50);
-        detailedText.setText("Detailed");
-        detailedText.setRotation(0);
-
-        spaciousText = (FreeTextView) textLayout.addFreeView(new FreeTextView(context),
-                10, 400,
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        spaciousText.setTextColor(0xff7d7d7d);
-        spaciousText.setTextSizeFitResolution(50);
-        spaciousText.setText("Spacious");
-        spaciousText.setRotation(252);
+        rimImage = (RingView) adjustLayout.addFreeView(new RingView(context), 664,664, new int[]{CENTER_HORIZONTAL});
+        rimText = (RingTextView) adjustLayout.addFreeView(new RingTextView(context), 664, 664, new int[]{CENTER_HORIZONTAL});
 
         //
         modeList = (ListView) baseLayout.addFreeView(new ListView(context),
@@ -148,12 +93,7 @@ public class ZaMajorLayout extends FreeLayout {
 
                 rimImage.setRotation(angle);
 
-                bassText.setTextColor(angle < 208 || angle > 260 ? 0xff7d7d7d : 0xff000000);
-                richText.setTextColor(angle < 278 || angle > 330 ? 0xff7d7d7d : 0xff000000);
-                vocalText.setTextColor(angle >= 345 || angle <= 39 ? 0xff000000 : 0xff7d7d7d);
-                detailedText.setTextColor(angle < 63 || angle > 111 ? 0xff7d7d7d : 0xff000000);
-                spaciousText.setTextColor(angle < 132 || angle > 181 ? 0xff7d7d7d : 0xff000000);
-
+                rimText.rotate(angle);
             }
         });
     }

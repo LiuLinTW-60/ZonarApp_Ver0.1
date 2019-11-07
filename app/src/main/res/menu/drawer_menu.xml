@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/device_info"
+            android:title="Device Info" />
+        <item android:id="@+id/software_update"
+            android:title="Software Update" />
+        <item android:id="@+id/xround_website"
+            android:title="XROUND Website" />
+        <item android:id="@+id/product_support"
+            android:title="Product Support" />
+        <item android:id="@+id/contact_us"
+            android:title="Contact Us" />
+        <item android:id="@+id/vr_recording"
+            android:title="VR Recording" />
+        <item android:id="@+id/xround_inc"
+            android:title="XROUND Inc." />
+    </group>
+
+</menu>

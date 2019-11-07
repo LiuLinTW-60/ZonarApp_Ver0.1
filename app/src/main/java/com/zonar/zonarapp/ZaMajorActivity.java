@@ -1,6 +1,7 @@
 package com.zonar.zonarapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,11 +22,18 @@ public class ZaMajorActivity extends ZaBaseActivity implements View.OnClickListe
 
     private ZaMajorLayout zaMajorLayout;
     private ListView modeList;
+    double[] EQ_arr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+
+        EQ_arr = intent.getDoubleArrayExtra("EQ_array");
+
+        if(EQ_arr==null)
+            EQ_arr=new double[10];
         setLayout();
 
         findView();
@@ -40,10 +48,8 @@ public class ZaMajorActivity extends ZaBaseActivity implements View.OnClickListe
         getToolbar().showMenuButton();
 
         ZonarUtils.init(this);
-
-        zaMajorLayout = new ZaMajorLayout(this);
+        zaMajorLayout = new ZaMajorLayout(this, EQ_arr);
         setContentView(zaMajorLayout);
-
         menuModeView = (SpinnerTextView) addOptionsMenu(new SpinnerTextView(this));
         menuModeView.setTitle("模式名稱");
     }
@@ -98,10 +104,12 @@ public class ZaMajorActivity extends ZaBaseActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.equals(menuModeView)) {
             modeList.setVisibility(View.VISIBLE);
+        }else{
+            modeList.setVisibility(View.INVISIBLE);
         }
     }
 
-    @Override
+    //@Override
     protected boolean isDefaultLogoShow() {
         return true;
     }
